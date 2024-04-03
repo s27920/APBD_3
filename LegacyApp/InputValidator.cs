@@ -24,10 +24,20 @@ public class InputValidator
         return true;
     }
 
-    public bool validateAge(DateTime dateOfBirth)
+    public bool ValidateAge(DateTime dateOfBirth)
     {
         int age = DateHandler.getAge(dateOfBirth);
         if (age < 21)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool ValidateCreditLimit(bool HasCreditLimit, int CreditLimit)
+    {
+        if (HasCreditLimit && CreditLimit < 500)
         {
             return false;
         }

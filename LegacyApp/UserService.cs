@@ -20,18 +20,22 @@ namespace LegacyApp
             _clientRepository = clientRepository;
             _creditService = creditService;
             _validator = new InputValidator();
+            _clientHandler = new ClientHandler();
         }
 
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
+            if (!_validator.ValidateEmail(email))
+            {
+                return false;
+            }
             
-            
-            if (!_validator.ValidateNames(firstName, lastName) || !_validator.ValidateEmail(email))
+            if (!_validator.ValidateNames(firstName, lastName))
             {
                 return false;
             }
 
-            if (!_validator.validateAge(dateOfBirth))
+            if (!_validator.ValidateAge(dateOfBirth))
             {
                 return false;
             }
@@ -48,25 +52,10 @@ namespace LegacyApp
             };
 
             ClientType clientType = (ClientType)Enum.Parse(typeof(ClientType), client.Type);
-            
-            // if (client.Type == "VeryImportantClient")
-            // {
-                // user.HasCreditLimit = false;
-            // }
-            // else if (client.Type == "ImportantClient")
-            // {
-                // int creditLimit = _creditService.GetCreditLimit(user.LastName, user.DateOfBirth);
-                // creditLimit = creditLimit * 2;
-                // user.CreditLimit = creditLimit;
-            // }
-            // else
-            // {
-                // user.HasCreditLimit = true;
-                // int creditLimit = _creditService.GetCreditLimit(user.LastName, user.DateOfBirth);
-                // user.CreditLimit = creditLimit;
-            // }
-            
-            if (user.HasCreditLimit && user.CreditLimit < 500)
+            user.HasCreditLimit = _clientHandler.CheckCreditLimitExists(clientType);
+            user.CreditLimit = _clientHandler.setCreditLimit(clientType, user.CreditLimit);
+
+            if (!_validator.ValidateCreditLimit(user.HasCreditLimit, user.CreditLimit))
             {
                 return false;
             }
