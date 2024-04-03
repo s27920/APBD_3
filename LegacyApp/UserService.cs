@@ -7,18 +7,20 @@ namespace LegacyApp
 
         private IClientRepository _clientRepository;
         private ICreditService _creditService;
+        private IUserDataAccess _userDataAccess;
         private InputValidator _validator;
         private ClientHandler _clientHandler;
 
 
         [Obsolete]
-        public UserService() : this(new ClientRepository(), new UserCreditService())
+        public UserService() : this(new ClientRepository(), new UserCreditService(), new DefaultIUserDataAccess())
         { }
 
-        public UserService(IClientRepository clientRepository, ICreditService creditService)
+        public UserService(IClientRepository clientRepository, ICreditService creditService, IUserDataAccess userDataAccess)
         {
             _clientRepository = clientRepository;
             _creditService = creditService;
+            _userDataAccess = userDataAccess;
             _validator = new InputValidator();
             _clientHandler = new ClientHandler();
         }
@@ -60,8 +62,7 @@ namespace LegacyApp
             {
                 return false;
             }
-
-            UserDataAccess.AddUser(user);
+            _userDataAccess.AddUser(user);
             return true;
         }
     } 
