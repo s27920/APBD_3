@@ -7,27 +7,24 @@ namespace LegacyApp
 
         private IClientRepository _clientRepository;
         private ICreditService _creditService;
+        private InputValidator _validator;
 
 
-        public UserService()
-        {
-            _clientRepository = new ClientRepository();
-            _creditService = new UserCreditService();
-        }
         public UserService(IClientRepository clientRepository, ICreditService creditService)
         {
             _clientRepository = clientRepository;
             _creditService = creditService;
+            _validator = new InputValidator();
         }
+
+        public UserService() : this(new ClientRepository(), new UserCreditService())
+        { }
 
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
-            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
-            {
-                return false;
-            }
-
-            if (!email.Contains("@") && !email.Contains("."))
+            
+            
+            if (!_validator.ValidateNames(firstName, lastName) || !_validator.ValidateEmail(email))
             {
                 return false;
             }
