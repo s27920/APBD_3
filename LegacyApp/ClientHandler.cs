@@ -6,7 +6,7 @@ public class ClientHandler
 {
     public bool CheckCreditLimitExists(ClientType type)
     {
-        if (type.Equals(ClientType.VeryImportantClient))
+        if (type==ClientType.VeryImportantClient)
         {
             return false;
         }
@@ -16,11 +16,11 @@ public class ClientHandler
 
     public int setCreditLimit(ClientType type, int creditLimit)
     {
-        if (type.Equals(ClientType.VeryImportantClient))
+        if (type == ClientType.VeryImportantClient)
         {
             return Int32.MaxValue;
         }
-        if (type.Equals(ClientType.ImportantClient))
+        if (type==ClientType.ImportantClient)
         {
             return creditLimit * 2;
         }

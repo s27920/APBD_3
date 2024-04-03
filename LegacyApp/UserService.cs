@@ -52,6 +52,7 @@ namespace LegacyApp
             };
 
             ClientType clientType = (ClientType)Enum.Parse(typeof(ClientType), client.Type);
+            user.CreditLimit = _creditService.GetCreditLimit(lastName, dateOfBirth);
             user.HasCreditLimit = _clientHandler.CheckCreditLimitExists(clientType);
             user.CreditLimit = _clientHandler.setCreditLimit(clientType, user.CreditLimit);
 
@@ -64,6 +65,5 @@ namespace LegacyApp
             return true;
         }
     } 
-    
-}
+} 
 

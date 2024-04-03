@@ -37,7 +37,7 @@ public class InputValidator
 
     public bool ValidateCreditLimit(bool HasCreditLimit, int CreditLimit)
     {
-        if (HasCreditLimit && CreditLimit < 500)
+        if (HasCreditLimit && CreditLimit < 500 )
         {
             return false;
         }
