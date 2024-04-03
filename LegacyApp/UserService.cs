@@ -8,6 +8,7 @@ namespace LegacyApp
         private IClientRepository _clientRepository;
         private ICreditService _creditService;
         private InputValidator _validator;
+        private ClientHandler _clientHandler;
 
 
         [Obsolete]
@@ -48,22 +49,22 @@ namespace LegacyApp
 
             ClientType clientType = (ClientType)Enum.Parse(typeof(ClientType), client.Type);
             
-            if (client.Type == "VeryImportantClient")
-            {
-                user.HasCreditLimit = false;
-            }
-            else if (client.Type == "ImportantClient")
-            {
-                int creditLimit = _creditService.GetCreditLimit(user.LastName, user.DateOfBirth);
-                creditLimit = creditLimit * 2;
-                user.CreditLimit = creditLimit;
-            }
-            else
-            {
-                user.HasCreditLimit = true;
-                int creditLimit = _creditService.GetCreditLimit(user.LastName, user.DateOfBirth);
-                user.CreditLimit = creditLimit;
-            }
+            // if (client.Type == "VeryImportantClient")
+            // {
+                // user.HasCreditLimit = false;
+            // }
+            // else if (client.Type == "ImportantClient")
+            // {
+                // int creditLimit = _creditService.GetCreditLimit(user.LastName, user.DateOfBirth);
+                // creditLimit = creditLimit * 2;
+                // user.CreditLimit = creditLimit;
+            // }
+            // else
+            // {
+                // user.HasCreditLimit = true;
+                // int creditLimit = _creditService.GetCreditLimit(user.LastName, user.DateOfBirth);
+                // user.CreditLimit = creditLimit;
+            // }
             
             if (user.HasCreditLimit && user.CreditLimit < 500)
             {
@@ -74,12 +75,6 @@ namespace LegacyApp
             return true;
         }
     } 
-    enum ClientType
-    {
-        VeryImportantClient,
-        ImportantClient,
-        NormalClient
-    }
+    
 }
-
 
