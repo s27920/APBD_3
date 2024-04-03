@@ -4,14 +4,7 @@ namespace LegacyApp;
 
 public class ClientHandler
 {
-    private ClientType type;
-
-    public ClientHandler(ClientType type)
-    {
-        this.type = type;
-    }
-
-    public bool CheckCreditLimitExists()
+    public bool CheckCreditLimitExists(ClientType type)
     {
         if (type.Equals(ClientType.VeryImportantClient))
         {
@@ -21,7 +14,7 @@ public class ClientHandler
         return true;
     }
 
-    public int SetCreditLimit(int creditLimit)
+    public int setCreditLimit(ClientType type, int creditLimit)
     {
         if (type.Equals(ClientType.VeryImportantClient))
         {
@@ -31,7 +24,6 @@ public class ClientHandler
         {
             return creditLimit * 2;
         }
-
         return creditLimit;
     }
 }
