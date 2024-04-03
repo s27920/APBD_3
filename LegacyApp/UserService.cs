@@ -10,15 +10,16 @@ namespace LegacyApp
         private InputValidator _validator;
 
 
+        [Obsolete]
+        public UserService() : this(new ClientRepository(), new UserCreditService())
+        { }
+
         public UserService(IClientRepository clientRepository, ICreditService creditService)
         {
             _clientRepository = clientRepository;
             _creditService = creditService;
             _validator = new InputValidator();
         }
-
-        public UserService() : this(new ClientRepository(), new UserCreditService())
-        { }
 
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
@@ -29,11 +30,7 @@ namespace LegacyApp
                 return false;
             }
 
-            var now = DateTime.Now;
-            int age = now.Year - dateOfBirth.Year;
-            if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
-
-            if (age < 21)
+            if (!_validator.validateAge(dateOfBirth))
             {
                 return false;
             }
@@ -48,6 +45,8 @@ namespace LegacyApp
                 FirstName = firstName,
                 LastName = lastName
             };
+
+            ClientType clientType = (ClientType)Enum.Parse(typeof(ClientType), client.Type);
             
             if (client.Type == "VeryImportantClient")
             {
@@ -74,5 +73,13 @@ namespace LegacyApp
             UserDataAccess.AddUser(user);
             return true;
         }
+    } 
+    enum ClientType
+    {
+        VeryImportantClient,
+        ImportantClient,
+        NormalClient
     }
 }
+
+
